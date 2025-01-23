@@ -15,6 +15,6 @@ func main(){
 	mux := http.NewServeMux()
 	routes.Routes(mux)
 
-	log.Println("Server listening at port: 8080")
-	http.ListenAndServe(":8080", mux)
+	log.Println("Server listening at port: 8001")
+	http.ListenAndServe(":8001", mux)
 }

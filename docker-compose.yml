@@ -2,9 +2,46 @@ services:
     broker-service: 
       build:
         context: ./broker
+      container_name: broker-service
       restart: always
       ports: 
         - "8080:8080"
       deploy: 
         mode: replicated
         replicas: 1
+
+    postgres: 
+      image: postgres
+      container_name: postgres_db
+      environment: 
+        POSTGRES_USER: postgres
+        POSTGRES_DB: postgres
+        POSTGRES_PASSWORD: mili@postgres1
+        POSTGRES_HOST: postgres
+        POSTGRES_PORT: 5432
+      ports: 
+        - "5432:5432"
+      volumes: 
+        - postgres-data:/var/lib/postgresql/data
+
+    authentication-service: 
+      build:
+        context: ./authentication
+      container_name: authentication-service
+      restart: always
+      environment: 
+        DB_USER: postgres
+        DB_NAME: postgres
+        DB_PASSWORD: mili@postgres1
+        DB_HOST: postgres
+        DB_PORT: 5432
+      ports: 
+        - "8001:8001"
+      deploy: 
+        mode: replicated
+        replicas: 1
+      depends_on: 
+        - postgres
+
+volumes: 
+  postgres-data: {}

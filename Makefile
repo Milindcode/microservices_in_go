@@ -1,10 +1,17 @@
 BROKER_BINARY=broker
 FRONT_END_BINARY=frontend
-
+AUTHENTICATION_BINARY=authentication
 ## build_broker: builds the broker binary as a linux executable
 build_broker:
 	@echo "Building broker binary..."
 	cd ./broker && env GOOS=linux CGO_ENABLED=0 go build -o ${BROKER_BINARY} ./
+	@echo "Done!"
+	cd ..
+
+
+build_authentication:
+	@echo "Building authentication binary..."
+	cd ./authentication && env GOOS=linux CGO_ENABLED=0 go build -o ${AUTHENTICATION_BINARY} ./
 	@echo "Done!"
 	cd ..
 
@@ -16,7 +23,7 @@ build_front:
 	cd ..
 
 ## up_build: stops docker-compose (if running), builds all projects and starts docker compose
-up_build: build_broker
+up_build: build_broker build_authentication
 	@echo "Stopping docker images (if running...)"
 	sudo docker compose down
 	@echo "Building (when required) and starting docker images..."
