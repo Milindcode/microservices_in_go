@@ -8,9 +8,12 @@ import (
 	routes "github.com/Milindcode/authentication-service/router"
 )
 
-func main(){
+func main() {
 
-	database.InitDB()
+	err := database.InitDB()
+	if err != nil {
+		log.Println(err)
+	}
 
 	mux := http.NewServeMux()
 	routes.Routes(mux)
